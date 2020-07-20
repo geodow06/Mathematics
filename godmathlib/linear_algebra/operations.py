@@ -1,6 +1,6 @@
-# from LinearAlgebra.__init__ import *
 import numpy as np
 
+# from godmathlib.constants import *
 
 def multiply2x2(m1, m2):
     a = m1[0, 0] * m2[0, 0] + m1[0, 1] * m2[1, 0]
@@ -223,23 +223,23 @@ def gauss_el(m):
     ans.reverse()
     return ans
 
-
-# test = np.asarray([[2, -3, 1], [2, 0, -1], [1, 4, 5]], dtype=np.complex)
-# print(gauss_el([[2.0,1.0,-1.0,8.0],
-#                [-3.0,-1.0,2.0,-11.0],
-#                [-2.0,1.0,2.0,-3.0]]))
-test = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]],
-                  dtype=np.complex)
-test2 = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]])
-print(test)
-print(test2)
-# print(len(test))
-print(upper_triangle(test))
-print(upper_triangle(test2))
-# print(determinent(test))
-# print(gauss_det(test))
-# print(gauss_det(test2))
-a = np.asarray([3, -3, 1], dtype=np.complex)
-b = np.asarray([4, 9, 2], dtype=np.complex)
-print(cross_product(a, b))
-print(transpose(a))
+if (__name__ == '__main__'):
+    # test = np.asarray([[2, -3, 1], [2, 0, -1], [1, 4, 5]], dtype=np.complex)
+    # print(gauss_el([[2.0,1.0,-1.0,8.0],
+    #                [-3.0,-1.0,2.0,-11.0],
+    #                [-2.0,1.0,2.0,-3.0]]))
+    test = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]],
+                    dtype=np.complex)
+    test2 = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]])
+    print(test)
+    print(test2)
+    # print(len(test))
+    print(upper_triangle(test))
+    print(upper_triangle(test2))
+    # print(determinent(test))
+    # print(gauss_det(test))
+    # print(gauss_det(test2))
+    a = np.asarray([3, -3, 1], dtype=np.complex)
+    b = np.asarray([4, 9, 2], dtype=np.complex)
+    print(cross_product(a, b))
+    print(transpose(a))
