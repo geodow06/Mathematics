@@ -1,7 +1,7 @@
 import unittest, numpy as np
-from godmathlib.linear_algebra import operations as op, types
+from godmathlib.linear_algebra import operations as op
 
-class TestLinAlg(unittest.TestCase):
+class TestOperations(unittest.TestCase):
     def test_transpose(self):
         test = np.asarray([[1, 2], [3, 4]], dtype=np.complex_)
         expected = np.asarray([[1, 3], [2, 4]], dtype=np.complex_)
@@ -74,39 +74,3 @@ class TestLinAlg(unittest.TestCase):
         test = np.asarray([[2 - 1j, 3], [3 + 2j, 2]], dtype=np.complex_)
         expected = complex(4, -1)
         np.testing.assert_equal(op.trace(test), expected)
-
-    def test_true_isunitary(self):
-        test = np.asarray([[0, 1j], [1j, 0]], dtype=np.complex_)
-        self.assertTrue(types.is_unitary(test))
-
-    def test_false_isunitary(self):
-        test = np.asarray([[2 - 1j, 3], [3 + 2j, 2]], dtype=np.complex_)
-        self.assertFalse(types.is_unitary(test))
-
-    def test_true_ishermitian1(self):
-        test = np.asarray([[1, -1j], [1j, 1]], dtype=np.complex_)
-        self.assertTrue(types.is_hermitian(test))
-
-    def test_true_ishermitian2(self):
-        test = np.asarray([[-1, 1 - 2j, 0], [1 + 2j, 0, -1j], [0, 1j, 1]], dtype=np.complex_)
-        self.assertTrue(types.is_hermitian(test))
-
-    def test_false_ishermitian1(self):
-        test = np.asarray([[2 - 1j, 3], [3 + 2j, 2]], dtype=np.complex_)
-        self.assertFalse(types.is_hermitian(test))
-
-    def test_false_ishermitian2(self):
-        test = np.asarray([[2 - 1j, 3, 1], [1, -3j, 1 - 3j], [3, 1 + 2j, 2]], dtype=np.complex_)
-        self.assertFalse(types.is_hermitian(test))
-
-    # def test_inverse(self):
-    #     test = np.asarray([[2 - 1j, 3], [3 + 2j, 2]], dtype=np.complex_)
-    #     expected = np.asarray([[2 - 1j, 3], [3 + 2j, 1 + 2j]], dtype=np.complex_)
-    #     expected_factor = complex(8 / 89, 5 / 89)
-    #     factor, matrix = inverse2x2(test)
-    #     np.testing.assert_equal(matrix, expected)
-    #     np.testing.assert_equal(inverse2x2(test), expected)
-
-
-if __name__ == '__main__':
-    unittest.main()
