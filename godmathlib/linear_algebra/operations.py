@@ -3,6 +3,7 @@ import numpy as np
 # from godmathlib.constants import *
 
 def multiply2x2(m1, m2):
+    """Multilply two numpy 2x2 arrays and return a numpy array."""
     a = m1[0, 0] * m2[0, 0] + m1[0, 1] * m2[1, 0]
     b = m1[0, 0] * m2[0, 1] + m1[0, 1] * m2[1, 1]
     c = m1[1, 0] * m2[0, 0] + m1[1, 1] * m2[1, 0]

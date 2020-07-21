@@ -1,0 +1,1 @@
+create a matrix object class inherits from numpy array? and has the operations then the types can inherit from matrix
