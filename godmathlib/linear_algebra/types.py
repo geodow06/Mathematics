@@ -1,16 +1,24 @@
 import numpy as np
 import random as rand
 from . import operations
+import time
 
-__all__ = ['identity','is_square','test_array','is_unitary','is_hermitian']
+__all__ = ['identity','identity_new','is_square','test_array','is_unitary','is_hermitian']
 
 def identity(dim):
     size = (dim, dim)
     i = np.zeros(size)
     for j in range(dim):
         i[j, j] = 1
+    # i.flat[::dim+1] = 1
+    toc = time.perf_counter()
     return i
 
+def identity_new(dim):
+    size = (dim, dim)
+    i = np.zeros(size)
+    i.flat[::dim+1] = 1
+    return i
 
 def is_square(m):
     if m.shape[0] == m.shape[1]:

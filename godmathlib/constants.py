@@ -1,5 +1,9 @@
 import numpy as np
 
+__all__= [
+    'PI','TAU','DEGREES','SOL'
+]
+
 # Circles
 
 PI = np.pi
