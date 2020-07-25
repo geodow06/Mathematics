@@ -4,7 +4,7 @@ __all__ = [
     'transpose', 'multiply', 'dagger', 'determinent', 'determinent2x2list',
     'determinent2x2', 'determinent3x3', 'determinent4x4', 'gauss_det', 'list_from_array',
     'gauss_el', 'cross_product', 'trace', 'upper_triangle', 'minor', 'minor_indices',
-    'inverse2x2'
+    'inverse2x2', 'adjugate','minor_matrix'
 ]
 
 
@@ -116,6 +116,18 @@ def minor(arraylist, size, index):
             new_minor.append(arraylist[((row + 1) * size) + indices[index * (size - 1) + column]])
     return new_minor
 
+def minor_matrix(m,i,j):
+    """Returns the (i,j) minor matrix"""
+    rows = m.shape[0]
+    cols = m.shape[1]
+    red_cols = cols-1
+    # Remove jth column
+    b = np.delete(m, np.s_[j::cols])
+    b = np.reshape(b, (rows, red_cols))
+    # # Remove ith row
+    c = np.delete(b, np.s_[i*red_cols:(i+1)*red_cols:])
+    c = np.reshape(c, (rows - 1, red_cols))
+    return c
 
 # element m[row,column] in list rep is list[row*rows + column]
 
@@ -127,6 +139,24 @@ def minor_indices(size):
             columns.append((i + (j + 1)) % size)
         values = values + sorted(columns)
     return values
+
+
+def adjugate(m):
+    """Adjugate matrix is the Transpose of the ij cofactor of a matrix m"""
+    return transpose(cofactor(m))
+
+
+def cofactor(m):
+    """Returns the ij cofactor of matrix"""
+    # c = np.zeros(m.shape, dtype=np.complex_)
+    rows = m.shape[0]
+    cols = rows
+    list = list_from_array(m)
+    size = int(len(list) ** 0.5)
+    c = [(-1) ** (i + j) * determinent(minor_matrix(m, i, j)) for i in range(rows) for j in range(cols)]
+    c = np.asarray(c)
+    c = np.reshape(c, m.shape)
+    return (c)
 
 
 def cross_product(a, b):
@@ -158,13 +188,13 @@ def trace(m):
 
     Sums the main diagonal components of a square matrix
     """
-    a = m.flat[::m.shape[0]+1]
+    a = m.flat[::m.shape[0] + 1]
     return sum(a)
 
 
 def inverse2x2(m):
     matrix = np.asarray([[m[0, 0], -m[0, 1]], [-m[1, 0], m[0, 0]]], dtype=np.complex_)
-    factor = (1 / determinent2x2(m))
+    factor = (1 / determinent(m))
     return factor, matrix
 
 

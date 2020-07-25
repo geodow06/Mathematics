@@ -56,16 +56,16 @@ class TestOperations(unittest.TestCase):
         det = op.determinent4x4(test)
         self.assertEqual(det, 18)
 
-    # def test_upper_triangle(self):
-    #     test = np.asarray([[2, -3, 1], [2, 0, -1], [1, 4, 5]], dtype=np.complex)
-    #     expected = np.asarray([[2, -3, 1], [0, 3, -2], [0, 0, 8.16666667]], dtype=np.complex)
-    #     np.testing.assert_equal(upper_triangle(test), expected)
+    def test_upper_triangle(self):
+        test = np.asarray([[8, -6, 2], [-6, 7, -4], [2, -4, 3]], dtype=np.complex)
+        expected = np.asarray([[8, -6, 2], [0, 2.5, -2.5], [0, 0, 0]], dtype=np.complex)
+        np.testing.assert_equal(op.upper_triangle(test), expected)
 
-    # def test_gauss_det(self):
-    #     test = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]],
-    #                       dtype=np.complex)
-    #     det = op.gauss_det(test)
-    #     self.assertEqual(det, -730, "Gauss 5x5 determinent")
+    def test_gauss_det(self):
+        test = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]],
+                          dtype=np.complex)
+        det = op.gauss_det(test)
+        self.assertAlmostEqual(det, -730, 3, "Gauss 5x5 determinent")
 
     def test_gauss_el(self):
         np.testing.assert_equal(op.gauss_el([[2.0, 1.0, -1.0, 8.0],
@@ -75,3 +75,18 @@ class TestOperations(unittest.TestCase):
     def test_trace(self):
         expected = complex(4, -1)
         np.testing.assert_equal(op.trace(C2X21), expected)
+
+    # def test_adjugate(self):
+    #     test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
+    #     expected = np.asarray([[-8, 18, -4], [-5, 12, -1], [4, -6, 2]])
+    #     np.testing.assert_equal(op.adjugate(test), expected)
+
+    def test_minor_matrix1(self):
+        test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
+        expected = np.asarray([[0,-2],[-4,1]])
+        np.testing.assert_equal(op.minor_matrix(test,0,0),expected)
+
+    def test_minor_matrix2(self):
+        test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
+        expected = np.asarray([[-3,-5],[3,1]])
+        np.testing.assert_equal(op.minor_matrix(test,1,1),expected)
