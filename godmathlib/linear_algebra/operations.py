@@ -34,6 +34,7 @@ def transpose(m):
     t = np.reshape(np.asarray([m[row, col] for col in range(cols) for row in range(rows)]), new_shape)
     return t
 
+
 def dagger(m):
     """Returns the transpose complex conjugate n x m array of a given m x n array"""
     rows = m.shape[0]
@@ -107,6 +108,27 @@ def determinent(m):
         return sum(values)
 
 
+def minor(arraylist, size, index):
+    indices = minor_indices(size)
+    new_minor = []
+    for row in range(size - 1):
+        for column in range(size - 1):
+            new_minor.append(arraylist[((row + 1) * size) + indices[index * (size - 1) + column]])
+    return new_minor
+
+
+# element m[row,column] in list rep is list[row*rows + column]
+
+def minor_indices(size):
+    values = []
+    for i in range(size):
+        columns = []
+        for j in range(size - 1):
+            columns.append((i + (j + 1)) % size)
+        values = values + sorted(columns)
+    return values
+
+
 def cross_product(a, b):
     # size = max(a.shape[0], a.shape[1])
     size = a.shape[0]
@@ -131,32 +153,13 @@ def cross_product(a, b):
         return sum(values)
 
 
-def minor(arraylist, size, index):
-    indices = minor_indices(size)
-    new_minor = []
-    for row in range(size - 1):
-        for column in range(size - 1):
-            new_minor.append(arraylist[((row + 1) * size) + indices[index * (size - 1) + column]])
-    return new_minor
-
-
-# element m[row,column] in list rep is list[row*rows + column]
-
-def minor_indices(size):
-    values = []
-    for i in range(size):
-        columns = []
-        for j in range(size - 1):
-            columns.append((i + (j + 1)) % size)
-        values = values + sorted(columns)
-    return values
-
-
 def trace(m):
-    a = complex(0, 0)
-    for i in range(m.shape[0]):
-        a += m[i, i]
-    return a
+    """Returns the Trace of a matrix
+
+    Sums the main diagonal components of a square matrix
+    """
+    a = m.flat[::m.shape[0]+1]
+    return sum(a)
 
 
 def inverse2x2(m):
