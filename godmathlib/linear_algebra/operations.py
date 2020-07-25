@@ -35,13 +35,11 @@ def transpose(m):
     return t
 
 def dagger(m):
+    """Returns the transpose complex conjugate n x m array of a given m x n array"""
     rows = m.shape[0]
-    columns = m.shape[1]
-    newShape = (columns, rows)
-    t = np.zeros(newShape, dtype=np.complex_)
-    for i in range(rows):
-        for j in range(columns):
-            t[j, i] = m[i, j].conj()
+    cols = m.shape[1]
+    new_shape = (cols, rows)
+    t = np.reshape(np.asarray([m[row, col].conj() for col in range(cols) for row in range(rows)]), new_shape)
     return t
 
 
