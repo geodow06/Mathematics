@@ -1,6 +1,11 @@
 import numpy as np
 
-# from godmathlib.constants import *
+__all__ = [
+    'transpose','multiply','multiply2x2','dagger','determinent','determinent2x2list',
+    'determinent2x2','determinent3x3','determinent4x4','gauss_det','list_from_array',
+    'gauss_el','cross_product','trace','upper_triangle','minor','minor_indices',
+    'inverse2x2'
+]
 
 def multiply2x2(m1, m2):
     """Multilply two numpy 2x2 arrays and return a numpy array."""
@@ -10,7 +15,6 @@ def multiply2x2(m1, m2):
     d = m1[1, 0] * m2[0, 1] + m1[1, 1] * m2[1, 1]
     result = np.array([[a, b], [c, d]], dtype=np.complex_)
     return result
-
 
 def multiply(m1, m2):
     if m1.shape[1] == m2.shape[0]:
