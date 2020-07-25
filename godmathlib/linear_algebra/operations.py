@@ -27,15 +27,12 @@ def multiply(a, b):
 
 
 def transpose(m):
+    """Returns the transpose matrix n x m array of a given m x n array"""
     rows = m.shape[0]
-    columns = m.shape[1]
-    newShape = (columns, rows)
-    t = np.zeros(newShape, dtype=np.complex_)
-    for i in range(rows):
-        for j in range(columns):
-            t[j, i] = m[i, j]
+    cols = m.shape[1]
+    new_shape = (cols, rows)
+    t = np.reshape(np.asarray([m[row, col] for col in range(cols) for row in range(rows)]), new_shape)
     return t
-
 
 def dagger(m):
     rows = m.shape[0]
