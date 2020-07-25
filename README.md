@@ -17,7 +17,7 @@ More specifically it is an alamgamation of mathematics and physics functions and
 
 ## **Running Tests**
 
-```python -m unittest tests.linear_algebra.test_linear_algebra```
+```python -m unittest tests.linear_algebra.test_operations```
 
 # **Documentation**
 

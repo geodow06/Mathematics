@@ -1,26 +1,29 @@
 import numpy as np
 
 __all__ = [
-    'transpose','multiply','multiply2x2','dagger','determinent','determinent2x2list',
-    'determinent2x2','determinent3x3','determinent4x4','gauss_det','list_from_array',
-    'gauss_el','cross_product','trace','upper_triangle','minor','minor_indices',
+    'transpose', 'multiply', 'dagger', 'determinent', 'determinent2x2list',
+    'determinent2x2', 'determinent3x3', 'determinent4x4', 'gauss_det', 'list_from_array',
+    'gauss_el', 'cross_product', 'trace', 'upper_triangle', 'minor', 'minor_indices',
     'inverse2x2'
 ]
 
-def multiply2x2(m1, m2):
-    """Multilply two numpy 2x2 arrays and return a numpy array."""
-    a = m1[0, 0] * m2[0, 0] + m1[0, 1] * m2[1, 0]
-    b = m1[0, 0] * m2[0, 1] + m1[0, 1] * m2[1, 1]
-    c = m1[1, 0] * m2[0, 0] + m1[1, 1] * m2[1, 0]
-    d = m1[1, 0] * m2[0, 1] + m1[1, 1] * m2[1, 1]
-    result = np.array([[a, b], [c, d]], dtype=np.complex_)
-    return result
 
-def multiply(m1, m2):
-    if m1.shape[1] == m2.shape[0]:
-        newshape = (m1.shape[0], m2.shape[1])
-        result = np.zeros(newshape, dtype=np.complex_)
-        return result
+def multiply(a, b):
+    """Multiply two matrices A and B where A is an m x n and B is an n x p returning an m x p"""
+    m = a.shape[0]
+    p = b.shape[1]
+    if a.shape[1] == b.shape[0]:
+        n = a.shape[1]
+    else:
+        n = False
+    if n:
+        new_shape = (m, p)
+        c = np.asarray(
+            [sum([a[row, x] * b[x, col] for x in range(p)]) for row in range(m) for col in range(p)]
+        )
+        return np.reshape(c, new_shape)
+    else:
+        print("The number of columns of A must equal the number of rows in B")
 
 
 def transpose(m):
@@ -228,13 +231,14 @@ def gauss_el(m):
     ans.reverse()
     return ans
 
+
 if (__name__ == '__main__'):
     # test = np.asarray([[2, -3, 1], [2, 0, -1], [1, 4, 5]], dtype=np.complex)
     # print(gauss_el([[2.0,1.0,-1.0,8.0],
     #                [-3.0,-1.0,2.0,-11.0],
     #                [-2.0,1.0,2.0,-3.0]]))
     test = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]],
-                    dtype=np.complex)
+                      dtype=np.complex)
     test2 = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]])
     print(test)
     print(test2)
