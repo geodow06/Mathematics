@@ -27,34 +27,32 @@ class TestOperations(unittest.TestCase):
         expected = np.asarray([[30 - 3j, 15 + 7j], [25 + 6j, 9 + 9j]], dtype=np.complex_)
         np.testing.assert_equal(op.multiply(C2X21, C2X22), expected)
 
-    def test_determinent2x2(self):
+    def test_det2x2(self):
         expected = complex(-5, -8)
-        np.testing.assert_equal(op.determinent2x2(C2X21), expected)
+        np.testing.assert_equal(op.determinent(C2X21), expected)
 
-    def test_determinent3x3(self):
+    def test_det3x3(self):
         test = np.asarray([[2, -3, 1], [2, 0, -1], [1, 4, 5]], dtype=np.complex)
-        det = op.determinent3x3(test)
-        self.assertEqual(det, 49)
-
-    def test_detnxn3x3(self):
-        test = [2, -3, 1, 2, 0, -1, 1, 4, 5]
         det = op.determinent(test)
         self.assertEqual(det, 49)
 
     def test_detnxn4x4(self):
-        test = [2, -3, 1, 1, 2, 0, -1, 1, 1, 4, 5, 1, 1, 1, 1, 1]
+        test = np.asarray([[2, -3, 1, 1], [2, 0, -1, 1], [1, 4, 5, 1], [1, 1, 1, 1]], dtype=np.complex)
         det = op.determinent(test)
         self.assertEqual(det, 18)
 
     def test_detnxn5x5(self):
-        test = [2, -3, 1, 1, 2, 0, -1, 1, 1, 4, 5, 1, 1, 1, 1, 1, 2, 3, 1, 2, 3, 4, 1, 6, 4]
+        test = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]],
+                          dtype=np.complex)
         det = op.determinent(test)
         self.assertEqual(det, -730)
 
-    def test_determinent4x4(self):
-        test = np.asarray([[2, -3, 1, 1], [2, 0, -1, 1], [1, 4, 5, 1], [1, 1, 1, 1]], dtype=np.complex)
-        det = op.determinent4x4(test)
-        self.assertEqual(det, 18)
+    def test_detnxn6x6(self):
+        test = np.asarray(
+            [[2, -3, 1, 1, 2, 3], [0, -1, 1, 1, 4, 1], [5, 1, 1, 1, 1, 2], [1, 2, 3, 1, 2, 5], [3, 4, 1, 6, 4, 7],
+             [3, 2, 1, 2, 4, 1]], dtype=np.complex)
+        det = op.determinent(test)
+        self.assertEqual(det, 196)
 
     def test_upper_triangle(self):
         test = np.asarray([[8, -6, 2], [-6, 7, -4], [2, -4, 3]], dtype=np.complex)
@@ -83,15 +81,15 @@ class TestOperations(unittest.TestCase):
 
     def test_minor_matrix1(self):
         test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
-        expected = np.asarray([[0,-2],[-4,1]])
-        np.testing.assert_equal(op.minor_matrix(test,0,0),expected)
+        expected = np.asarray([[0, -2], [-4, 1]])
+        np.testing.assert_equal(op.minor_matrix(test, 0, 0), expected)
 
     def test_minor_matrix2(self):
         test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
-        expected = np.asarray([[-3,-5],[3,1]])
-        np.testing.assert_equal(op.minor_matrix(test,1,1),expected)
+        expected = np.asarray([[-3, -5], [3, 1]])
+        np.testing.assert_equal(op.minor_matrix(test, 1, 1), expected)
 
     def test_inverse(self):
         test = np.asarray([[3, 0, 2], [2, 0, -2], [0, 1, 1]])
         expected = np.asarray([[0.2, 0.2, 0], [-0.2, 0.3, 1], [0.2, -0.3, 0]])
-        np.testing.assert_almost_equal(op.inverse(test),expected)
+        np.testing.assert_almost_equal(op.inverse(test), expected)

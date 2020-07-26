@@ -1,10 +1,10 @@
 import numpy as np
 
 __all__ = [
-    'transpose', 'multiply', 'dagger', 'determinent', 'determinent2x2list',
-    'determinent2x2', 'determinent3x3', 'determinent4x4', 'gauss_det', 'list_from_array',
+    'transpose', 'multiply', 'dagger', 'determinent',
+    'determinent2x2', 'gauss_det', 'list_from_array',
     'gauss_el', 'cross_product', 'trace', 'upper_triangle', 'minor', 'minor_indices',
-    'inverse2x2', 'adjugate','minor_matrix','cofactor','inverse'
+    'inverse2x2', 'adjugate', 'minor_matrix', 'cofactor', 'inverse'
 ]
 
 
@@ -44,41 +44,6 @@ def dagger(m):
     return t
 
 
-def determinent2x2(m):
-    det = m[0, 0] * m[1, 1] - m[0, 1] * m[1, 0]
-    return det
-
-
-def determinent2x2list(l):
-    det = l[0] * l[3] - l[1] * l[2]
-    return det
-
-
-def determinent3x3(m):
-    values = []
-    indices = minor_indices(m.shape[0])
-    for i in range(m.shape[0]):
-        minor = np.asarray(
-            [[m[1, indices[2 * i]], m[1, indices[2 * i + 1]]], [m[2, indices[2 * i]], m[2, indices[2 * i + 1]]]],
-            dtype=np.complex)
-        values.append((-1) ** i * m[0, i] * determinent2x2(minor))
-    return sum(values)
-
-
-def determinent4x4(m):
-    values = []
-    size = m.shape[0]
-    indices = minor_indices(size)
-    for i in range(size):
-        minor = np.asarray(
-            [[m[1, indices[(size - 1) * i]], m[1, indices[(size - 1) * i + 1]], m[1, indices[(size - 1) * i + 2]]],
-             [m[2, indices[(size - 1) * i]], m[2, indices[(size - 1) * i + 1]], m[2, indices[(size - 1) * i + 2]]],
-             [m[3, indices[(size - 1) * i]], m[3, indices[(size - 1) * i + 1]], m[3, indices[(size - 1) * i + 2]]]],
-            dtype=np.complex)
-        values.append((-1) ** i * m[0, i] * determinent3x3(minor))
-    return sum(values)
-
-
 # m is list of matrix entries in
 # e.g. ((2,1),(5,2)) is a list [2,1,5,2]
 def list_from_array(m):
@@ -94,19 +59,22 @@ def list_from_array(m):
         return m
 
 
+def determinent2x2(m):
+    det = m[0, 0] * m[1, 1] - m[0, 1] * m[1, 0]
+    return det
+
+
 def determinent(m):
     values = []
-    list = list_from_array(m)
-    size = int(len(list) ** 0.5)
+    size = m.shape[0]
     if size == 2:
-        return determinent2x2list(list)
-        # return determinent2x2(m)
+        return determinent2x2(m)
     elif size < 2:
         return 0
     else:
-        for i in range(size):
-            values.append((-1) ** i * list[i] * determinent(minor(list, size, i)))
-            # values.append((-1) ** i * list[i] * determinent(minor_matrix(m, i, j)))
+        # Holds for any i where i < size we choose 0
+        for j in range(size):
+            values.append((-1) ** j * m[0, j] * determinent(minor_matrix(m, 0, j)))
         return sum(values)
 
 
@@ -118,18 +86,20 @@ def minor(arraylist, size, index):
             new_minor.append(arraylist[((row + 1) * size) + indices[index * (size - 1) + column]])
     return new_minor
 
-def minor_matrix(m,i,j):
+
+def minor_matrix(m, i, j):
     """Returns the (i,j) minor matrix"""
     rows = m.shape[0]
     cols = m.shape[1]
-    red_cols = cols-1
+    red_cols = cols - 1
     # Remove jth column
     b = np.delete(m, np.s_[j::cols])
     b = np.reshape(b, (rows, red_cols))
     # # Remove ith row
-    c = np.delete(b, np.s_[i*red_cols:(i+1)*red_cols:])
+    c = np.delete(b, np.s_[i * red_cols:(i + 1) * red_cols:])
     c = np.reshape(c, (rows - 1, red_cols))
     return c
+
 
 # element m[row,column] in list rep is list[row*rows + column]
 
@@ -141,9 +111,6 @@ def minor_indices(size):
             columns.append((i + (j + 1)) % size)
         values = values + sorted(columns)
     return values
-
-
-
 
 
 def cofactor(m):
@@ -158,17 +125,20 @@ def cofactor(m):
     c = np.reshape(c, m.shape)
     return (c)
 
+
 def adjugate(m):
     """Adjugate matrix is the Transpose of the ij cofactor of a matrix m"""
     return transpose(cofactor(m))
 
+
 def inverse(m):
     """Returns the inverse matrix"""
     det = determinent(m)
-    if det!=0:
-        return 1/det*adjugate(m)
+    if det != 0:
+        return 1 / det * adjugate(m)
     else:
         print("This matrix has no inverse as its determinent is zero")
+
 
 def cross_product(a, b):
     # size = max(a.shape[0], a.shape[1])
