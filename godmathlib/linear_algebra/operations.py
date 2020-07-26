@@ -119,7 +119,6 @@ def cofactor(m):
     rows = m.shape[0]
     cols = rows
     list = list_from_array(m)
-    size = int(len(list) ** 0.5)
     c = [(-1) ** (i + j) * determinent(minor_matrix(m, i, j)) for i in range(rows) for j in range(cols)]
     c = np.asarray(c)
     c = np.reshape(c, m.shape)
@@ -140,28 +139,15 @@ def inverse(m):
         print("This matrix has no inverse as its determinent is zero")
 
 
-def cross_product(a, b):
-    # size = max(a.shape[0], a.shape[1])
-    size = a.shape[0]
-    m = np.ones((size, size), dtype=np.complex_)
-    for i in range(size):
-        m[1, i] = a[i]
-        m[2, i] = b[i]
-    values = []
-    list = list_from_array(m)
-    size = int(len(list) ** 0.5)
-    if size == 3:
-        for i in range(size):
-            values.append((-1) ** i * list[i] * determinent(minor(list, size, i)))
-        return values
-    elif size == 2:
-        return determinent2x2list(list)
-    elif size < 2:
-        return 0
-    else:
-        for i in range(size):
-            values.append((-1) ** i * list[i] * determinent(minor(list, size, i)))
-        return sum(values)
+def cross_product(a, b, basis=np.asarray([[1], [1], [1]])):
+    """Returns the resultant vector from the cross product of a and b"""
+    vectors = [basis, a, b]
+    dim = max(a.shape)
+    flattener = lambda v: v.flatten()
+    m = np.asarray([flattener(vector) for vector in vectors])
+    c = np.asarray([m[0, j] * determinent(minor_matrix(m, 0, j)) for j in range(dim)])
+    c = np.reshape(c, (dim, 1))
+    return c
 
 
 def trace(m):
