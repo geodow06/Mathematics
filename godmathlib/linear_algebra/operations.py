@@ -115,12 +115,9 @@ def minor_indices(size):
 
 def cofactor(m):
     """Returns the ij cofactor of matrix"""
-    # c = np.zeros(m.shape, dtype=np.complex_)
     rows = m.shape[0]
     cols = rows
-    list = list_from_array(m)
-    c = [(-1) ** (i + j) * determinent(minor_matrix(m, i, j)) for i in range(rows) for j in range(cols)]
-    c = np.asarray(c)
+    c = np.asarray([(-1) ** (i + j) * determinent(minor_matrix(m, i, j)) for i in range(rows) for j in range(cols)])
     c = np.reshape(c, m.shape)
     return (c)
 
@@ -157,12 +154,6 @@ def trace(m):
     """
     a = m.flat[::m.shape[0] + 1]
     return sum(a)
-
-
-def inverse2x2(m):
-    matrix = np.asarray([[m[0, 0], -m[0, 1]], [-m[1, 0], m[0, 0]]], dtype=np.complex_)
-    factor = (1 / determinent(m))
-    return factor, matrix
 
 
 def gauss(m):
@@ -225,25 +216,3 @@ def gauss_el(m):
             ans.append((m[sol][-1] - inner) / m[sol][-sol - 2])
     ans.reverse()
     return ans
-
-
-if (__name__ == '__main__'):
-    # test = np.asarray([[2, -3, 1], [2, 0, -1], [1, 4, 5]], dtype=np.complex)
-    # print(gauss_el([[2.0,1.0,-1.0,8.0],
-    #                [-3.0,-1.0,2.0,-11.0],
-    #                [-2.0,1.0,2.0,-3.0]]))
-    test = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]],
-                      dtype=np.complex)
-    test2 = np.asarray([[2, -3, 1, 1, 2], [0, -1, 1, 1, 4], [5, 1, 1, 1, 1], [1, 2, 3, 1, 2], [3, 4, 1, 6, 4]])
-    print(test)
-    print(test2)
-    # print(len(test))
-    print(upper_triangle(test))
-    print(upper_triangle(test2))
-    # print(determinent(test))
-    # print(gauss_det(test))
-    # print(gauss_det(test2))
-    a = np.asarray([3, -3, 1], dtype=np.complex)
-    b = np.asarray([4, 9, 2], dtype=np.complex)
-    print(cross_product(a, b))
-    print(transpose(a))
