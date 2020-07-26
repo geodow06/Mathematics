@@ -181,36 +181,47 @@ def gauss(m):
 
 
 def upper_triangle(m):
-    # eliminate columns
-    for col in range(len(m[0])):
-        for row in range(col + 1, len(m)):
-            r = [(rowValue * (-(m[row][col] / m[col][col]))) for rowValue in m[col]]
-            m[row] = [sum(pair) for pair in zip(m[row], r)]
-    # now backsolve by substitution
-    return m
+    """Returns the upper triangle form of input matrix"""
+    tm = m.copy()
+    for col in range(len(tm[0])):
+        for row in range(col + 1, len(tm)):
+            r = [(rowValue * (-(tm[row][col] / tm[col][col]))) for rowValue in tm[col]]
+            tm[row] = [sum(pair) for pair in zip(tm[row], r)]
+    return tm
 
 
 def gauss_det(m):
-    values = []
+    """Returns the determinent of an nxn matrix
+
+    For a given matrix A there are three properties namely:
+    1. The determinent of an nxn matrix is homogenous of degree n
+    2. Interchanging any pair of columns or rows of a matrix multiplies its determinant by −1
+    3. Adding a scalar multiple of one column to another column does not change the value of the determinant
+    4. If A is a triangular matrix then its determinant equals the product of the diagonal entries
+
+    Which allow us to simplify the computation of det(A) from that of the Laplace expansion which requires
+    exponential number of minor determinents to be calculated and can instead transform A into a trigngular
+    matrix and calculate the product of the diagonal entries thus calculating the determinent
+    """
     tm = upper_triangle(m)
-    for i in range(tm.shape[0]):
-        values.append(tm[i, i])
-    det = np.prod(values)
+    det = np.prod(tm.flat[::tm.shape[0] + 1])
     return det
 
 
 def gauss_el(m):
+    """Returns a list of solutions for a given set of linear equations in matrix form"""
     ans = []
-    upper_triangle(m)
-    m.reverse()  # makes it easier to backsolve
+    t = upper_triangle(m)
+    # Reverse makes it easier to backsolve
+    t.reverse()
     for sol in range(len(m)):
         if sol == 0:
-            ans.append(m[sol][-1] / m[sol][-2])
+            ans.append(t[sol][-1] / t[sol][-2])
         else:
             # substitute in all known coefficients x
-            inner = sum([ans[x] * m[sol][-2 - x] for x in range(sol)])
+            inner = sum([ans[x] * t[sol][-2 - x] for x in range(sol)])
             # the equation is now reduced to ax + b = c form
             # solve with (c - b) / a
-            ans.append((m[sol][-1] - inner) / m[sol][-sol - 2])
+            ans.append((t[sol][-1] - inner) / t[sol][-sol - 2])
     ans.reverse()
     return ans
