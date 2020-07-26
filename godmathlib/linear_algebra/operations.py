@@ -4,7 +4,7 @@ __all__ = [
     'transpose', 'multiply', 'dagger', 'determinent',
     'determinent2x2', 'gauss_det', 'list_from_array',
     'gauss_el', 'cross_product', 'trace', 'upper_triangle', 'minor', 'minor_indices',
-    'inverse2x2', 'adjugate', 'minor_matrix', 'cofactor', 'inverse'
+    'adjugate', 'minor_matrix', 'cofactor', 'inverse'
 ]
 
 
@@ -207,10 +207,8 @@ def gauss_el(m):
         if sol == 0:
             ans.append(m[sol][-1] / m[sol][-2])
         else:
-            inner = 0
-            # substitute in all known coefficients
-            for x in range(sol):
-                inner += (ans[x] * m[sol][-2 - x])
+            # substitute in all known coefficients x
+            inner = sum([ans[x] * m[sol][-2 - x] for x in range(sol)])
             # the equation is now reduced to ax + b = c form
             # solve with (c - b) / a
             ans.append((m[sol][-1] - inner) / m[sol][-sol - 2])
