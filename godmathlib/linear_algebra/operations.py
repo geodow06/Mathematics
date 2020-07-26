@@ -4,7 +4,7 @@ __all__ = [
     'transpose', 'multiply', 'dagger', 'determinent', 'determinent2x2list',
     'determinent2x2', 'determinent3x3', 'determinent4x4', 'gauss_det', 'list_from_array',
     'gauss_el', 'cross_product', 'trace', 'upper_triangle', 'minor', 'minor_indices',
-    'inverse2x2', 'adjugate','minor_matrix'
+    'inverse2x2', 'adjugate','minor_matrix','cofactor','inverse'
 ]
 
 
@@ -100,11 +100,13 @@ def determinent(m):
     size = int(len(list) ** 0.5)
     if size == 2:
         return determinent2x2list(list)
+        # return determinent2x2(m)
     elif size < 2:
         return 0
     else:
         for i in range(size):
             values.append((-1) ** i * list[i] * determinent(minor(list, size, i)))
+            # values.append((-1) ** i * list[i] * determinent(minor_matrix(m, i, j)))
         return sum(values)
 
 
@@ -141,9 +143,7 @@ def minor_indices(size):
     return values
 
 
-def adjugate(m):
-    """Adjugate matrix is the Transpose of the ij cofactor of a matrix m"""
-    return transpose(cofactor(m))
+
 
 
 def cofactor(m):
@@ -158,6 +158,17 @@ def cofactor(m):
     c = np.reshape(c, m.shape)
     return (c)
 
+def adjugate(m):
+    """Adjugate matrix is the Transpose of the ij cofactor of a matrix m"""
+    return transpose(cofactor(m))
+
+def inverse(m):
+    """Returns the inverse matrix"""
+    det = determinent(m)
+    if det!=0:
+        return 1/det*adjugate(m)
+    else:
+        print("This matrix has no inverse as its determinent is zero")
 
 def cross_product(a, b):
     # size = max(a.shape[0], a.shape[1])

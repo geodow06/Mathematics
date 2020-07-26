@@ -76,10 +76,10 @@ class TestOperations(unittest.TestCase):
         expected = complex(4, -1)
         np.testing.assert_equal(op.trace(C2X21), expected)
 
-    # def test_adjugate(self):
-    #     test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
-    #     expected = np.asarray([[-8, 18, -4], [-5, 12, -1], [4, -6, 2]])
-    #     np.testing.assert_equal(op.adjugate(test), expected)
+    def test_adjugate(self):
+        test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
+        expected = np.asarray([[-8, 18, -4], [-5, 12, -1], [4, -6, 2]])
+        np.testing.assert_equal(op.adjugate(test), expected)
 
     def test_minor_matrix1(self):
         test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
@@ -90,3 +90,8 @@ class TestOperations(unittest.TestCase):
         test = np.asarray([[-3, 2, -5], [-1, 0, -2], [3, -4, 1]])
         expected = np.asarray([[-3,-5],[3,1]])
         np.testing.assert_equal(op.minor_matrix(test,1,1),expected)
+
+    def test_inverse(self):
+        test = np.asarray([[3, 0, 2], [2, 0, -2], [0, 1, 1]])
+        expected = np.asarray([[0.2, 0.2, 0], [-0.2, 0.3, 1], [0.2, -0.3, 0]])
+        np.testing.assert_almost_equal(op.inverse(test),expected)
