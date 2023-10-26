@@ -41,7 +41,7 @@ def test_array():
 def is_unitary(m):
     if is_square(m):
         conjugate = operations.dagger(m)
-        result = operations.multiply2x2(m, conjugate)
+        result = operations.multiply(m, conjugate)
         i = identity(m.shape[0])
         if np.array_equal(result, i):
             return True
