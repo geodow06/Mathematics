@@ -23,25 +23,16 @@ def rungeKutta(dydx, y0, x0, x, steps):
         x0 = x0 + h
     return y
 
-
 def euler(dydt, y0, t0, t, steps):
     """Solves ODE by Euler method
-
     given a function dydt(y(t),t) and initial conditions y0 = y(t0)
     """
     h = t / steps
-    t_values = [t0]
-    y_values = [y0]
-    for n in range(steps + 1):
-        if n > 0:
-            new_t = t_values[0] + n * h
-            new_y = y_values[n - 1] + h * dydt(new_t, y_values[n - 1])
-            t_values.append(new_t)
-            y_values.append(new_y)
-    plt.plot(t_values, y_values, label="Euler")
-    y = y_values[-1]
-    return y
-
+    yn = y0
+    for n in range(steps):
+        tn = t0 + n * h
+        yn = yn + h * dydt(tn, yn)
+    return yn
 
 def midpoint(dydt, y0, t0, t, steps):
     """Solves ODE by Midpoint method
@@ -57,7 +48,7 @@ def midpoint(dydt, y0, t0, t, steps):
         y_n_plus_one = y_values[n] + h * dydt(t_n + half_step, y_values[n] + half_step * dydt(t_n, y_values[n]))
         t_values.append(t_n + h)
         y_values.append(y_n_plus_one)
-    plt.plot(t_values, y_values, label="Midpoint")
+    # plt.plot(t_values, y_values, label="Midpoint")
     y = y_values[-1]
     return y
 
