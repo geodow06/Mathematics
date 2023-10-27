@@ -42,7 +42,9 @@ def euler(dydx, y0, x0, x, steps):
 def midpoint(dydx, y0, x0, x, steps):
     """Solves ODE by Midpoint method
 
-    given a function dydt(y(t),t) and initial conditions y0 = y(t0)
+    given a function dydx(y(x),x) and initial conditions y0 = y(x0)
+
+    returns an approximation for y(x) at the provided value of x
     """
     h = x / steps
     yn = y0
