@@ -1,9 +1,10 @@
 from numpy import sin
 import matplotlib.pyplot as plt
 
-__all__ = ['rungeKutta4', 'euler', 'midpoint', 'pec']
+__all__ = ['rk4', 'euler', 'midpoint', 'pec']
 
-def rungeKutta4(dydx, y0, x0, x, steps):
+
+def rk4(dydx, y0, x0, x, steps):
     """Solves ODE by Runge-Kutta using 4 increments
 
     given a function dydx(y(x),x) and initial conditions y0 = y(x0)
@@ -22,30 +23,35 @@ def rungeKutta4(dydx, y0, x0, x, steps):
         xn = xn + h
     return yn
 
-def euler(dydt, y0, t0, t, steps):
+
+def euler(dydx, y0, x0, x, steps):
     """Solves ODE by Euler method
 
-    given a function dydt(y(t),t) and initial conditions y0 = y(t0)
+    given a function dydx(y(x),x) and initial conditions y0 = y(x0)
+
+    returns an approximation for y(x) at the provided value of x
     """
-    h = t / steps
+    h = x / steps
     yn = y0
     for n in range(steps):
-        tn = t0 + n * h
-        yn = yn + h * dydt(tn, yn)
+        tn = x0 + n * h
+        yn = yn + h * dydx(tn, yn)
     return yn
 
-def midpoint(dydt, y0, t0, t, steps):
+
+def midpoint(dydx, y0, x0, x, steps):
     """Solves ODE by Midpoint method
 
     given a function dydt(y(t),t) and initial conditions y0 = y(t0)
     """
-    h = t / steps
+    h = x / steps
     yn = y0
     for n in range(steps):
-        t_n = t0 + n * h
+        t_n = x0 + n * h
         half_step = h / 2
-        yn = yn + h * dydt(t_n + half_step, yn + half_step * dydt(t_n, yn))
+        yn = yn + h * dydx(t_n + half_step, yn + half_step * dydx(t_n, yn))
     return yn
+
 
 def pec(f):
     return True
