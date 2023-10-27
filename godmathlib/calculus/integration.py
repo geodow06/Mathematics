@@ -1,27 +1,26 @@
 from numpy import sin
 import matplotlib.pyplot as plt
 
-__all__ = ['rungeKutta', 'euler', 'midpoint', 'pec']
+__all__ = ['rungeKutta4', 'euler', 'midpoint', 'pec']
 
+def rungeKutta4(dydx, y0, x0, x, steps):
+    """Solves ODE by Runge-Kutta using 4 increments
 
-def rungeKutta(dydx, y0, x0, x, steps):
-    # Count number of iterations using step size or
+    given a function dydx(y(x),x) and initial conditions y0 = y(x0)
+
+    returns an approximation for y(x) at the provided value of x
+    """
     h = x / steps
-    # Iterate for number of iterations
-    y = y0
-    for i in range(1, steps + 1):
-        "Apply Runge Kutta Formulas to find next value of y"
-        k1 = h * dydx(x0, y)
-        k2 = h * dydx(x0 + 0.5 * h, y + 0.5 * k1)
-        k3 = h * dydx(x0 + 0.5 * h, y + 0.5 * k2)
-        k4 = h * dydx(x0 + h, y + k3)
-
-        # Update next value of y
-        y = y + (1.0 / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
-
-        # Update next value of x
-        x0 = x0 + h
-    return y
+    xn = x0
+    yn = y0
+    for n in range(0, steps):
+        k1 = h * dydx(xn, yn)
+        k2 = h * dydx(xn + 0.5 * h, yn + 0.5 * k1)
+        k3 = h * dydx(xn + 0.5 * h, yn + 0.5 * k2)
+        k4 = h * dydx(xn + h, yn + k3)
+        yn = yn + (1.0 / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
+        xn = xn + h
+    return yn
 
 def euler(dydt, y0, t0, t, steps):
     """Solves ODE by Euler method
